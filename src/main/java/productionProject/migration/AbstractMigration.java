@@ -82,31 +82,6 @@ public abstract class AbstractMigration {
         }
     }
 
-    protected void saveLimitAndLimitChangeHistory(
-        Long userId,
-        Long playerId,
-        String periodType,
-        Integer siteId,
-        BigDecimal limitAmount,
-        boolean limitRenew,
-        Timestamp setTime,
-        BigDecimal newLimitAmount,
-        Timestamp newLimitEffectiveTime
-    ) throws SQLException {
-        sInsertTitanLimit.setString(3, periodType);
-
-        Long limitId = saveTitanLimit(playerId, userId, periodType, limitAmount, limitRenew, setTime, newLimitAmount, newLimitEffectiveTime);
-
-        log.debug("   Save Limit change history - userId: {}, playerId: {}, periodType {}", userId, playerId, periodType);
-        sInsertTitanLimitChangeHistory.setTimestamp(1, setTime);
-        sInsertTitanLimitChangeHistory.setLong(2, limitId);
-        sInsertTitanLimitChangeHistory.setLong(3, playerId);
-        sInsertTitanLimitChangeHistory.setLong(4, siteId);
-        sInsertTitanLimitChangeHistory.setLong(5, userId);
-        sInsertTitanLimitChangeHistory.setBigDecimal(8, limitAmount);
-        sInsertTitanLimitChangeHistory.executeUpdate();
-    }
-
     protected Long saveTitanLimit(
         Long playerId,
         Long userId,

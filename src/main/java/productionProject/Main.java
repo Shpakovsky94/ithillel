@@ -1,11 +1,6 @@
 package productionProject;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,20 +8,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import productionProject.datasource.Datasource;
-import productionProject.task.DepositLimitUsageMigratingTask;
-import productionProject.task.LossLimitMigratingTask;
-import productionProject.task.LossLimitUsageMigratingTask;
-import productionProject.task.PlayerAndLimitMigratingTask;
-import productionProject.task.SessionLimitMigratingTask;
-import productionProject.youngPlayerLimitUpdate.prepareTable.PrepareTablesTask;
-import productionProject.youngPlayerLimitUpdate.setPendingLimits.SetPendingLimitTask;
-import productionProject.youngPlayerLimitUpdate.updateLossLimit.UpdateLimitTask;
+import productionProject.task.PrepareTablesTask;
+import productionProject.task.SetPendingLimitTask;
+import productionProject.task.UpdateLimitTask;
 
 @Slf4j
 public class Main {
@@ -193,270 +181,21 @@ public class Main {
                                                          prop.getProperty("titan.limit.datasource.password"),
                                                          threads);
 
-        Datasource titanPlayerDatasource = new Datasource(prop.getProperty("titan.player.datasource.url"),
-                                                          prop.getProperty("titan.player.datasource.username"),
-                                                          prop.getProperty("titan.player.datasource.password"),
-                                                          threads);
-
-        if (PHASE.equals("playersAndLimits")) {
-            List<Long>      offsetInformation = calculatePageSizeAndThreadSizeForUsers(billfoldDatasource, threads - 1);
-            ExecutorService executor          = Executors.newFixedThreadPool(threads);
-
-            for (long i = 0; i < offsetInformation.get(1); i++) {
-                PlayerAndLimitMigratingTask playerAndLimitMigratingTask = new PlayerAndLimitMigratingTask(i, offsetInformation.get(0), billfoldDatasource, titanPlayerDatasource, titanLimitDatasource);
-                executor.execute(playerAndLimitMigratingTask);
-            }
-
-            executor.shutdown();
-        } else if (PHASE.equals("limitUsages")) {
-            List<Long>      offsetInformation = calculatePageSizeAndThreadSizeForPlayersLimitType(titanLimitDatasource, "deposit", threads - 1);
-            ExecutorService executor          = Executors.newFixedThreadPool(threads);
-
-            for (long i = 0; i < offsetInformation.get(1); i++) {
-                DepositLimitUsageMigratingTask limitUsageMigratingTask = new DepositLimitUsageMigratingTask(i, offsetInformation.get(0), billfoldDatasource, titanPlayerDatasource,
-                                                                                                            titanLimitDatasource);
-                executor.execute(limitUsageMigratingTask);
-            }
-            executor.shutdown();
-        } else if (PHASE.equals("sessionLimits")) {
-            List<Long>      offsetInformation = calculatePageSizeAndThreadSizeForSessionLimits(billfoldDatasource, threads - 1);
-            ExecutorService executor          = Executors.newFixedThreadPool(threads);
-
-            for (long i = 0; i < offsetInformation.get(1); i++) {
-                SessionLimitMigratingTask sessionLimitMigratingTask = new SessionLimitMigratingTask(i, offsetInformation.get(0), billfoldDatasource, titanLimitDatasource);
-                executor.execute(sessionLimitMigratingTask);
-            }
-            executor.shutdown();
-        } else if (PHASE.equals("lossLimits")) {
-            List<Long>      offsetInformation = calculatePageSizeAndThreadSizeForLossLimits(billfoldDatasource, threads - 1);
-            ExecutorService executor          = Executors.newFixedThreadPool(threads);
-
-            for (long i = 0; i < offsetInformation.get(1); i++) {
-                LossLimitMigratingTask lossLimitMigratingTask = new LossLimitMigratingTask(i, offsetInformation.get(0), billfoldDatasource, titanLimitDatasource);
-                executor.execute(lossLimitMigratingTask);
-            }
-            executor.shutdown();
-        } else if (PHASE.equals("lossLimitsUsages")) {
-            List<Long>      offsetInformation = calculatePageSizeAndThreadSizeForPlayersLimitType(titanLimitDatasource, "loss", threads - 1);
-            ExecutorService executor          = Executors.newFixedThreadPool(threads);
-
-            for (long i = 0; i < offsetInformation.get(1); i++) {
-                LossLimitUsageMigratingTask lossLimitMigratingTask = new LossLimitUsageMigratingTask(i, offsetInformation.get(0), billfoldDatasource, titanPlayerDatasource, titanLimitDatasource);
-                executor.execute(lossLimitMigratingTask);
-            }
-            executor.shutdown();
-        } else if (PHASE.equals("backupTables")) {
-            BackupTablesTask backupTablesTask = new BackupTablesTask(billfoldDatasource, titanPlayerDatasource, titanLimitDatasource);
-            backupTablesTask.run();
-        } else if (PHASE.equals("populatePlayersData")) {
-            List<Long>      offsetInformation = calculatePageSizeAndThreadSizeForUsers(billfoldDatasource, threads);
-            ExecutorService executor          = Executors.newFixedThreadPool(threads);
-
-            for (long i = 0; i < offsetInformation.get(1); i++) {
-                PopulatePlayersDataTask populatePlayersDataTask = new PopulatePlayersDataTask(i, offsetInformation.get(0), billfoldDatasource, titanPlayerDatasource, titanLimitDatasource);
-                executor.execute(populatePlayersDataTask);
-            }
-            executor.shutdown();
-        } else if (PHASE.equals("mergePlayers")) {
-            MergePlayersTask mergePlayersTask = new MergePlayersTask(billfoldDatasource, titanPlayerDatasource, titanLimitDatasource);
-            mergePlayersTask.run();
-        } else if (PHASE.equals("mergeLimits")) {
-            MergeLimitsTask mergeLimitsTask = new MergeLimitsTask(billfoldDatasource, titanPlayerDatasource, titanLimitDatasource);
-            mergeLimitsTask.run();
-        } else if (PHASE.equals("prepareTables")) {
-            PrepareTablesTask prepareTablesTask = new PrepareTablesTask(billfoldDatasource, titanLimitDatasource);
-            prepareTablesTask.run();
-        } else if (PHASE.equals("setPendingLimits")) {
-            SetPendingLimitTask setPendingLimitTask = new SetPendingLimitTask(billfoldDatasource, titanLimitDatasource);
-            setPendingLimitTask.run();
-        } else if (PHASE.equals("updateLimits")) {
-            UpdateLimitTask updateLimitTask = new UpdateLimitTask(billfoldDatasource, titanLimitDatasource);
-            updateLimitTask.run();
+        switch (PHASE) {
+            case "prepareTables":
+                PrepareTablesTask prepareTablesTask = new PrepareTablesTask(billfoldDatasource, titanLimitDatasource);
+                prepareTablesTask.run();
+                break;
+            case "setPendingLimits":
+                SetPendingLimitTask setPendingLimitTask = new SetPendingLimitTask(billfoldDatasource, titanLimitDatasource);
+                setPendingLimitTask.run();
+                break;
+            case "updateLimits":
+                UpdateLimitTask updateLimitTask = new UpdateLimitTask(billfoldDatasource, titanLimitDatasource);
+                updateLimitTask.run();
+                break;
         }
         log.debug("Finished migration in {} milliseconds", System.currentTimeMillis() - startTs);
-    }
-
-    private static List<Long> calculatePageSizeAndThreadSizeForPlayersLimitType(
-        Datasource titanLimitDatasource,
-        String limitType,
-        int threads
-    ) {
-        Long playerCount = null;
-        try (Connection connection = titanLimitDatasource.getConnection()) {
-            // 1. get player with limits count
-            // 2. split into groups with count of threads
-            PreparedStatement statement = connection.prepareStatement("SELECT COUNT(DISTINCT (PLAYER_ID)) FROM `LIMIT` WHERE LIMIT_TYPE = ?");
-            statement.setString(1, limitType);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                playerCount = resultSet.getLong(1);
-            }
-            statement.close();
-        } catch (SQLException e) {
-            log.error("titan_limit SQL error", e);
-        }
-        log.debug("Total player with limits count: " + playerCount);
-
-        return getOffsetInformation(threads, playerCount);
-    }
-
-    private static List<Long> calculatePageSizeAndThreadSizeForSessionLimits(
-        Datasource billfoldDatasource,
-        int threads
-    ) {
-        Long limitCount = null;
-        try (Connection connection = billfoldDatasource.getConnection()) {
-            String query = "SELECT COUNT(*) FROM " + Main.BILLFOLD_TABLE_PREFIX + "GAMING_LIMIT GL JOIN " + Main.BILLFOLD_TABLE_PREFIX
-                + "USER U on GL.FK_USER_ID = U.PK_USER_ID WHERE TITAN_PLAYER_ID IS NOT NULL AND TIME_LIMIT_AMOUNT IS NOT NULL AND TIME_LIMIT_START_TIME IS NOT NULL AND TIME_LIMIT_PERIOD IS NOT NULL";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet         resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                limitCount = resultSet.getLong(1);
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        log.debug("Total session time limit count: " + limitCount);
-        return getOffsetInformation(threads, limitCount);
-    }
-
-    private static List<Long> calculatePageSizeAndThreadSizeForLossLimits(
-        Datasource billfoldDatasource,
-        int threads
-    ) {
-        Long limitCount = null;
-        try (Connection connection = billfoldDatasource.getConnection()) {
-            String query = "SELECT COUNT(*) FROM " + Main.BILLFOLD_TABLE_PREFIX + "GAMING_LIMIT GL JOIN " + Main.BILLFOLD_TABLE_PREFIX
-                + "USER U on GL.FK_USER_ID = U.PK_USER_ID WHERE U.TITAN_PLAYER_ID IS NOT NULL AND LOSS_LIMIT_AMOUNT IS NOT NULL AND LOSS_LIMIT_PERIOD IS NOT NULL AND LOSS_LIMIT_START_TIME IS NOT NULL AND (LOSS_LIMIT_AUTO_RENEW = true OR ( (LOSS_LIMIT_AUTO_RENEW IS NULL OR LOSS_LIMIT_AUTO_RENEW = false) AND LOSS_LIMIT_END_TIME > NOW()))";
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet         resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                limitCount = resultSet.getLong(1);
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        log.debug("Total loss time limit count: " + limitCount);
-        return getOffsetInformation(threads, limitCount);
-    }
-
-
-    private static List<Long> calculatePageSizeAndThreadSizeForUsers(
-        Datasource billfoldDatasource,
-        int threads
-    ) {
-        Long userCount = null;
-        try (Connection connection = billfoldDatasource.getConnection()) {
-            // 1. get user count
-            // 2. split into groups with count of threads
-
-            String query = "SELECT COUNT(*) FROM `" + Main.BILLFOLD_TABLE_PREFIX + "USER` WHERE TRUE";
-            if (USER_STATUSES.size() > 0) {
-                query += " AND STATUS IN " + Util.createInClauseForStatement(USER_STATUSES.size());
-            }
-            if (INCLUDE_SITE_IDS.size() > 0) {
-                query += " AND SITE_ID IN " + Util.createInClauseForStatement(INCLUDE_SITE_IDS.size());
-            }
-            if (EXCLUDE_SITE_IDS.size() > 0) {
-                query += " AND SITE_ID NOT IN " + Util.createInClauseForStatement(EXCLUDE_SITE_IDS.size());
-            }
-            if (ONLY_MIGRATE_SSN.size() > 0) {
-                query += " AND NATIONAL_ID_NUMBER IN " + Util.createInClauseForStatement(ONLY_MIGRATE_SSN.size());
-            }
-
-            PreparedStatement statement = connection.prepareStatement(query);
-            int               lastIndex = 0;
-            int               offset    = 0;
-            for (int i = 0; i < USER_STATUSES.size(); i++) {
-                lastIndex = i + offset + 1;
-                statement.setLong(lastIndex, USER_STATUSES.get(i));
-            }
-            offset = lastIndex;
-            for (int i = 0; i < INCLUDE_SITE_IDS.size(); i++) {
-                lastIndex = i + offset + 1;
-                statement.setLong(lastIndex, INCLUDE_SITE_IDS.get(i));
-            }
-            offset = lastIndex;
-            for (int i = 0; i < EXCLUDE_SITE_IDS.size(); i++) {
-                lastIndex = i + offset + 1;
-                statement.setLong(lastIndex, EXCLUDE_SITE_IDS.get(i));
-            }
-            offset = lastIndex;
-            for (int i = 0; i < ONLY_MIGRATE_SSN.size(); i++) {
-                lastIndex = i + offset + 1;
-                statement.setString(lastIndex, ONLY_MIGRATE_SSN.get(i));
-            }
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                userCount = resultSet.getLong(1);
-            }
-
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        log.debug("Total user count: " + userCount);
-        return getOffsetInformation(threads, userCount);
-    }
-
-    private static List<Long> getOffsetInformation(
-        int threads,
-        Long recordCount
-    ) {
-        List<Long> offsetInformation = new ArrayList<>();
-        if (recordCount != null) {
-            if (threads > 0) {
-                if (recordCount < threads) {
-                    log.debug("Count in each thread: " + recordCount);
-                    log.debug("Total threads: 1");
-
-                    offsetInformation.add(recordCount);
-                    offsetInformation.add((long) 1);
-                } else {
-                    Long countInEachThread = recordCount / threads;
-                    int  totalOffsetGroup  = recordCount > countInEachThread * threads ? threads + 1 : threads;
-
-                    log.debug("Count in each thread: " + countInEachThread);
-                    log.debug("Total threads: " + totalOffsetGroup);
-
-                    offsetInformation.add(countInEachThread);
-                    offsetInformation.add((long) totalOffsetGroup);
-                }
-            } else {
-                log.debug("Count in each thread: " + recordCount);
-                log.debug("Total threads: 1");
-
-                offsetInformation.add(recordCount);
-                offsetInformation.add((long) 1);
-            }
-        }
-
-        return offsetInformation;
-    }
-
-    private static Properties loadProperties(final String absolutePath) {
-        try {
-            Properties  properties  = new Properties();
-            InputStream inputStream = new FileInputStream(absolutePath);
-            properties.load(inputStream);
-
-            return properties;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     private static Properties loadPropertiesFromSystemEnv() {
