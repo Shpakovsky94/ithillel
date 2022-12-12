@@ -9,11 +9,9 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import productionProject.Main;
-import productionProject.Util;
 
 @Slf4j
 public abstract class AbstractMigration {
@@ -107,33 +105,15 @@ public abstract class AbstractMigration {
             existingAmount = existingLimitRs.getBigDecimal("AMOUNT");
         }
 
-        DatePair limitPeriod = Util.calculateCurrentPeriod(periodType, setTime, limitRenew, Main.LIMIT_END_TIME_MODE, 2);
 
-        log.debug("  Save or update Limit  - userId: {}, playerId: {}, periodType {}, limitAmount: {}, startTime: {}, endTime: {}", userId, playerId, periodType, limitAmount,
-                  limitPeriod.getStartTime(), limitPeriod.getEndTime());
         if (existingAmount != null && existingAmount.compareTo(BigDecimal.ZERO) > 0) {
             // 3. if found, compare the limit amount and use the smaller value
             if (existingAmount.compareTo(limitAmount) > 0) {
-                if (Dates.isDateInPeriod(new Date(), limitPeriod.getStartTime(), limitPeriod.getEndTime())) {
-                    // existingAmount is greater that limitAmount, update to use new
-                    sUpdateTitanLimit.setTimestamp(1, setTime);
-                    sUpdateTitanLimit.setTimestamp(2, new Timestamp(limitPeriod.getStartTime().getTime()));
-                    sUpdateTitanLimit.setTimestamp(3, new Timestamp(limitPeriod.getEndTime().getTime()));
-                    sUpdateTitanLimit.setBoolean(4, limitRenew);
-                    sUpdateTitanLimit.setBigDecimal(5, limitAmount);
-                    sUpdateTitanLimit.setBigDecimal(6, calculateUsedAmount(playerId, limitId, limitPeriod));
-                    sUpdateTitanLimit.setTimestamp(7, newLimitEffectiveTime);
-                    sUpdateTitanLimit.setBigDecimal(8, newLimitAmount);
-                    sUpdateTitanLimit.setLong(9, limitId);
-                    sUpdateTitanLimit.executeUpdate();
-                }
             }
         } else {
             // 2. if not found, insert
             sInsertTitanLimit.setLong(1, playerId);
             sInsertTitanLimit.setTimestamp(4, setTime);
-            sInsertTitanLimit.setTimestamp(5, new Timestamp(limitPeriod.getStartTime().getTime()));
-            sInsertTitanLimit.setTimestamp(6, new Timestamp(limitPeriod.getEndTime().getTime()));
             sInsertTitanLimit.setBoolean(7, limitRenew);
             sInsertTitanLimit.setBigDecimal(8, limitAmount);
             sInsertTitanLimit.setBigDecimal(9, BigDecimal.ZERO);
@@ -144,31 +124,6 @@ public abstract class AbstractMigration {
         }
 
         return limitId;
-    }
-
-    protected BigDecimal calculateUsedAmount(
-        final Long playerId,
-        final Long limitId,
-        final DatePair limitPeriod
-    ) throws SQLException {
-        log.debug("Calculating usedAmount for player {}, limit id {}, start time: {}, end time: {}", playerId, limitId, new Timestamp(limitPeriod.getStartTime().getTime()),
-                  new Timestamp(limitPeriod.getEndTime().getTime()));
-        BigDecimal amount = BigDecimal.ZERO;
-        sSelectUsagesAmountInTitan.setLong(1, limitId);
-        sSelectUsagesAmountInTitan.setLong(3, playerId);
-        sSelectUsagesAmountInTitan.setTimestamp(4, new Timestamp(limitPeriod.getStartTime().getTime()));
-        sSelectUsagesAmountInTitan.setTimestamp(5, new Timestamp(limitPeriod.getEndTime().getTime()));
-        sSelectUsagesAmountInTitan.setLong(6, limitId);
-        ResultSet existedUsedAmountRS = sSelectUsagesAmountInTitan.executeQuery();
-
-        if (existedUsedAmountRS.next()) {
-            log.debug("found usage");
-            amount = existedUsedAmountRS.getBigDecimal("SUM_AMOUNT");
-        }
-
-        log.debug("Calculated amount: {}", amount);
-
-        return amount;
     }
 
     protected int countResultSetSize(final ResultSet rs) throws SQLException {

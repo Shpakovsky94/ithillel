@@ -18,14 +18,10 @@ import productionProject.task.UpdateLimitTask;
 
 @Slf4j
 public class Main {
-    private final static String DEFAULT_APP_PROPERTIES = "migration/app.properties";
+    private final static String DEFAULT_APP_PROPERTIES = "migration/application.properties";
     public static        String PHASE;
 
     public static String LIMIT_END_TIME_MODE;
-    public static String DEPOSIT_LIMIT_TYPE = "deposit";
-    public static String SESSION_LIMIT_TYPE = "session";
-    public static String LOSS_LIMIT_TYPE    = "loss";
-    public static String WAGER_LIMIT_TYPE   = "loss";
 
     public static List<Long>   INCLUDE_SITE_IDS       = new ArrayList<>();
     public static List<Long>   EXCLUDE_SITE_IDS       = new ArrayList<>();
@@ -80,7 +76,7 @@ public class Main {
         if (appPropertiesPath.equals("fromEnvironmentVariables")) {
             prop = loadPropertiesFromSystemEnv();
         } else {
-            prop = loadProperties(appPropertiesPath);
+            prop = new Properties();
         }
 
         if (prop == null) {

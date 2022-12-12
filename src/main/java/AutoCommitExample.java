@@ -7,11 +7,11 @@ public class AutoCommitExample {
 
     // JDBC Driver Name & Database URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String JDBC_DB_URL = "jdbc:mysql://localhost:3306/tutorialDb";
+    static final String JDBC_DB_URL = "jdbc:mysql://localhost:3306/test";
 
     // JDBC Database Credentials
     static final String JDBC_USER = "root";
-    static final String JDBC_PASS = "admin@123";
+    static final String JDBC_PASS = "rootroot";
 
     public static void main(String[] args) {
         try {

@@ -248,8 +248,8 @@ public class LimitService extends AbstractMigration {
         final String limitType,
         final String periodType
     ) {
-        Date currentPeriodStartTime = DateService.getCurrentDatetime();
-        Date currentPeriodEndTime   = DateService.getCurrentPeriodEndTime(periodType);
+        Date currentPeriodStartTime = new Date();
+        Date currentPeriodEndTime   = new Date();
 
         Limit limitToInsert = new Limit();
         limitToInsert.setPlayerId(user.getTitanPlayerId());
@@ -266,8 +266,8 @@ public class LimitService extends AbstractMigration {
     private void buildClearedLimitToUpdate(
         Limit limit
     ) {
-        Date currentPeriodStartTime = DateService.getCurrentDatetime();
-        Date currentPeriodEndTime   = DateService.getCurrentPeriodEndTime(limit.getPeriodType());
+        Date currentPeriodStartTime = new Date();
+        Date currentPeriodEndTime   = new Date();
 
         limit.setSetTime(formatter.format(currentPeriodStartTime));
         limit.setCurrentPeriodStartTime(formatter.format(currentPeriodStartTime));
