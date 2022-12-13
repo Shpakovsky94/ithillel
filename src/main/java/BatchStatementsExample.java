@@ -5,7 +5,7 @@ public class BatchStatementsExample {
 
     //https://www.tutorialspoint.com/jdbc/jdbc-batch-processing.htm
     public static void main(String[] args) {
-        Connection connObj = CloseJdbcObjects.ConnectionHelper.getConnection();
+        Connection connObj = ConnectionHelper.getConnection();
 
         if (connObj == null) {
             return;
@@ -27,11 +27,11 @@ public class BatchStatementsExample {
             int[] recordsAffected = stmtObj.executeBatch();
             connObj.commit();
         } catch (Exception sqlException) {
-            CloseJdbcObjects.ConnectionHelper.rollbackConnection(connObj);
+            ConnectionHelper.rollbackConnection(connObj);
 
             sqlException.printStackTrace();
         } finally {
-            CloseJdbcObjects.ConnectionHelper.closeConnection(connObj);
+            ConnectionHelper.closeConnection(connObj);
         }
 
     }

@@ -32,11 +32,4 @@ public class PreparedStmtExample {
             sqlException.printStackTrace();
         }
     }
-
-//    public void getDistinctPersonLastName(String lastName){
-//        PreparedStatement prepStatement = connObj.prepareStatement(
-//                "SELECT DISTINCT LAST_NAME FROM PERSON WHERE CITY = ?");
-//        prepStatement.setString(1, lastName);
-//
-//    }
 }

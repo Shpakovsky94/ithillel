@@ -5,14 +5,9 @@ import java.sql.Statement;
 public class AutoCommitExample {
     // JDBC Driver Name & Database URL
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String JDBC_DB_URL = "jdbc:mysql://localhost:3306/test";
-
-    // JDBC Database Credentials
-    static final String JDBC_USER = "root";
-    static final String JDBC_PASS = "rootroot";
 
     public static void main(String[] args) throws SQLException {
-        Connection connObj = CloseJdbcObjects.ConnectionHelper.getConnection();
+        Connection connObj = ConnectionHelper.getConnection();
         if (connObj == null){
             return;
         }
