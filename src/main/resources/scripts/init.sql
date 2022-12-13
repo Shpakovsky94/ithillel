@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS test.PERSON (
                                        PK_PERSON_ID int NOT NULL AUTO_INCREMENT,
                                        FIRST_NAME varchar(40),
                                        LAST_NAME varchar(40),
-                                       AGE int,
+                                       AGE int ,
                                        CITY varchar(20),
                                        PRIMARY KEY (PK_PERSON_ID)
                                        );

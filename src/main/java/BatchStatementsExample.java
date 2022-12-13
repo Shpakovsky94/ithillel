@@ -1,40 +1,44 @@
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class BatchStatementsExample {
 
-    // JDBC Driver Name & Database URL
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String JDBC_DB_URL = "jdbc:mysql://localhost:3306/test";
-
-    // JDBC Database Credentials
-    static final String JDBC_USER = "root";
-    static final String JDBC_PASS = "rootroot";
-
-
     //https://www.tutorialspoint.com/jdbc/jdbc-batch-processing.htm
     public static void main(String[] args) {
+        Connection connObj = CloseJdbcObjects.ConnectionHelper.getConnection();
+
+        if (connObj == null) {
+            return;
+        }
+
         try {
-            Class.forName(JDBC_DRIVER);
-            Connection connObj = DriverManager.getConnection(JDBC_DB_URL, JDBC_USER, JDBC_PASS);
 
             connObj.setAutoCommit(false);
 
             Statement stmtObj = connObj.createStatement();
-            stmtObj.addBatch("INSERT INTO PERSON VALUES(3, 'Zak', 'Goroshko', 40, 'Kyiv')");
-            stmtObj.addBatch("INSERT INTO PERSON VALUES(4, 'Bob', 'Zlato', 20, 'Kharkiv')");
-            stmtObj.addBatch("UPDATE PERSON SET AGE = 15 WHERE id = 4");
+            stmtObj.addBatch(
+                    "INSERT INTO PERSON (FIRST_NAME, LAST_NAME, AGE, CITY) " +
+                            "VALUES('Zak', 'Goroshko', 40, 'Kyiv')");
+            stmtObj.addBatch("INSERT INTO PERSON (FIRST_NAME, LAST_NAME, AGE, CITY)" +
+                    "VALUES('Bob', 'Zlato', 20, 'Kharkiv')");
+            stmtObj.addBatch("UPDATE PERSON SET AGE = 15 WHERE PK_PERSON_ID = 4");
 
             // Execute Batch
             int[] recordsAffected = stmtObj.executeBatch();
             connObj.commit();
         } catch (Exception sqlException) {
+            CloseJdbcObjects.ConnectionHelper.rollbackConnection(connObj);
+
             sqlException.printStackTrace();
+        } finally {
+            CloseJdbcObjects.ConnectionHelper.closeConnection(connObj);
         }
+
     }
 
     //production code example
+    //https://www.baeldung.com/spring-jdbc-jdbctemplate
+
 //    private void updateFilesContent(
 //        String fileTableName,
 //        List<FileDto> fileDtoList

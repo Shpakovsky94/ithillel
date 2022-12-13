@@ -12,3 +12,7 @@ services:
       - 3306
     volumes:
       - ./src/main/resources/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+# docker ps
+# docker exec -it *CONTAINER ID* /bin/bas\
+# mysql -u root -p rootroot

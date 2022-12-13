@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 public class PreparedStmtExample {
 
     // JDBC Driver Name & Database URL
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String JDBC_DB_URL = "jdbc:mysql://localhost:3306/test";
 
     // JDBC Database Credentials
@@ -17,17 +17,26 @@ public class PreparedStmtExample {
         try {
             Class.forName(JDBC_DRIVER);
             Connection connObj = DriverManager.getConnection(JDBC_DB_URL, JDBC_USER, JDBC_PASS);
-
+            String city = "Lviv";
             PreparedStatement prepStatement = connObj.prepareStatement(
-                "SELECT DISTINCT LAST_NAME FROM PERSON WHERE CITY=?");
-            prepStatement.setString(1, "Lviv");
+                    "SELECT DISTINCT LAST_NAME FROM PERSON WHERE CITY = ?");
+            prepStatement.setString(1, city);
 
             ResultSet resObj = prepStatement.executeQuery();
             while (resObj.next()) {
-                System.out.println("LAST_NAME?= " + resObj.getString("LAST_NAME"));
+                String lastName = resObj.getString("LAST_NAME");
+                System.out.println("LAST_NAME: " + lastName);
             }
+            connObj.close();
         } catch (Exception sqlException) {
             sqlException.printStackTrace();
         }
     }
+
+//    public void getDistinctPersonLastName(String lastName){
+//        PreparedStatement prepStatement = connObj.prepareStatement(
+//                "SELECT DISTINCT LAST_NAME FROM PERSON WHERE CITY = ?");
+//        prepStatement.setString(1, lastName);
+//
+//    }
 }

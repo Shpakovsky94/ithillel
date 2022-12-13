@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 public class InvalidColumnIndexExample {
 
     // JDBC Driver Name & Database URL
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String JDBC_DB_URL = "jdbc:mysql://localhost:3306/test";
 
     // JDBC Database Credentials
