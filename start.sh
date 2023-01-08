@@ -1,1 +1,0 @@
-java -jar myapp.jar 4444

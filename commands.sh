@@ -1,6 +1,7 @@
 #navigation
 pwd
-cd
+cd ../
+cd /
 
 double tab
 
@@ -9,6 +10,7 @@ ls
 ls -l
 
 #grant access
+#https://chmod-calculator.com/
 chmod 777
 
 #show only match
@@ -48,8 +50,19 @@ docker cp  83f52fd5d2a4:/ithillel/scripts/start.sh start2.sh
 sh start.sh
 java -jar target/myapp-jar-with-dependencies.jar 1200
 
-setsid ./start.sh User >/dev/null
+setsid ./start-main-1200.sh User >/dev/null
+setsid ./start-main-4500.sh User >/dev/null
 
 #kill process
 ps aux
 kill -9 PID
+
+#cron task
+#https://crontab.guru/
+# NB! server time
+crontab -e
+crontab -l
+
+5 21 * * * sh /ithillel/scripts/start-cron-task.sh > /ithillel/scripts/logs/cron.log 2>&1
+50 21 * * * root cd /ithillel/scripts && /bin/sh ./start-cron-task.sh
+* * * * *  /bin/bash /ithillel/scripts/start-cron-task.sh
