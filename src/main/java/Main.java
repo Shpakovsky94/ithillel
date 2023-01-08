@@ -9,6 +9,7 @@ public class Main {
 
         try {
             long sleepTime;
+            int count = 0;
 
             if (args.length > 0) {
                 sleepTime = Long.parseLong(args[0]);
@@ -20,13 +21,13 @@ public class Main {
 
             while (true) {
                 Thread.sleep(sleepTime);
-                log.info("Execution time: {} ms", getDifferenceFromDateToNowInMs(startTime));
+                log.info("Count: {} Time from start: {} ms", ++count, getDifferenceFromDateToNowInMs(startTime));
             }
         } catch (Exception e) {
             log.error(e.getClass().getSimpleName(), e.getMessage(), e);
         }
 
-        log.info("Execution time took: {} ms", getDifferenceFromDateToNowInMs(startTime));
+        log.info("Execution took: {} ms", getDifferenceFromDateToNowInMs(startTime));
     }
 
     private static long getDifferenceFromDateToNowInMs(Date date){

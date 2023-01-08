@@ -4,6 +4,7 @@ RUN apt-get update && \
     apt-get install -y \
     less \
     nano \
+    util-linux \
     procps
 
 RUN mkdir -p /ithillel/scripts

@@ -1,7 +1,6 @@
 <configuration>
 
-<!--    <property name="HOME_LOG" value="/Users/oleksandrshpakovskyi/programming/ithillel/project/src/main/java/app.log"/>-->
-    <property name="HOME_LOG" value="logs/app.log"/>
+    <property name="HOME_LOG" value="logs/myapp.log"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
