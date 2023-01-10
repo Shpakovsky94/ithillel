@@ -1,3 +1,3 @@
-touch created-via-cron.txt
+touch ./ithillel/scripts/created-via-cron.txt
 
-date > created-via-cron.txt
+date > ./ithillel/scripts/created-via-cron.txt

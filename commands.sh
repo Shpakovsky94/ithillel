@@ -7,7 +7,7 @@ double tab
 
 #see tree
 ls
-ls -l
+ls -lh
 
 #grant access
 #https://chmod-calculator.com/

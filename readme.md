@@ -1,6 +1,16 @@
-1. start the docker container from ``docker-compose.yml``
-
-2. get CONTAINER ID from the list and insert it to the query below
+1. build jar file 
+```
+mvn clean compile assembly:single
+```
+2. docker build image
+```
+docker build -t myapp .
+```
+3. start the docker container from 
+```
+docker-compose up -d
+```
+4. get CONTAINER ID from the list and insert it to the query below
 ```
 docker ps
 ```
@@ -8,7 +18,3 @@ docker ps
  ```
  docker exec -it *CONTAINER ID* /bin/bash
  ```
-3. connect to the db
-``` 
-mysql -u root -p rootroot
-```
