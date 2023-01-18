@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="/assets/css/sideNav.css">
+<nav class="preload">
+  <button class="header__button_burger" id="btnNav" type="button"><i class="material-icons">menu</i></button>
+
+  <nav class="nav">
+    <div class="nav__links">
+
+      <a class="nav__link" href="#">
+        <i class="material-icons">person</i>
+        User Info
+      </a>
+      <a class="nav__link" href="#">
+        <i class="material-icons">dashboard</i>
+        Add/Edit Fridges
+      </a>
+      <a class="nav__link " href="#">
+        <i class="material-icons">source</i>
+        Add/Edit Category
+      </a>
+      <a class="nav__link" href="#">
+        <i class="material-icons">verified</i>
+        Go Premium
+      </a>
+      <div class="nav__link">
+        <i class="material-icons">cancel</i>
+        <button class="login-form-button" (click)="logOut()">Logout</button>
+      </div>
+
+
+    </div>
+    <div class="nav__overlay"></div>
+  </nav>
+  <script src="/assets/js/sideNav.js"></script>
+
+</nav>
+
+
+<div class="menu-sidebar-content ">
+  <nav class="navbar-sidebar">
+
+    <ul class="list-unstyled navbar-list">
+
+      <li *ngFor="let tempFridge of fridges">
+
+        <a routerLink="/fridge/ {{tempFridge.id }}" routerLinkActive="active-link">{{ tempFridge.name}}
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+
+
+

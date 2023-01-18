@@ -1,0 +1,42 @@
+<div class="loginBackground">
+
+  <form class="login-form" name="form-signin" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+
+    <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+      {{errorMessage}}
+    </div>
+
+    <div class="login-form-logo-container">
+      <img class="login-form-logo" src="assets/images/logo.png" alt="Logo">
+    </div>
+
+    <div class="login-form-content">
+      <div class="form-group" [ngClass]="{'has-error':f.submitted &&!username.valid}">
+
+        <div class="login-form-custom">Login to your account</div>
+        <input class="login-form-input" type="text" name="username" [(ngModel)]="user.username" #username="ngModel"
+               required placeholder="Username">
+
+        <div class="alert alert-danger" *ngIf="f.submitted && !username.valid">
+          A valid username is required.
+        </div>
+      </div>
+
+      <div class="form-group" [ngClass]="{'has-error':f.submitted &&!password.valid}">
+
+        <input class="login-form-input" type="password" name="password" [(ngModel)]="user.password" #password="ngModel"
+               required placeholder="Password">
+
+        <div class="alert alert-danger" *ngIf="f.submitted && !password.valid">
+          Password is required.
+        </div>
+      </div>
+      <button class="login-form-button" type="submit">Login</button>
+
+      <div class="login-form-links">
+        <a class="login-form-link" href="./">Create New Account!</a>
+      </div>
+    </div>
+    <div class="login-form-bottom-fade"></div>
+  </form>
+</div>

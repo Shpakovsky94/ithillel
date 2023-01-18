@@ -1,0 +1,78 @@
+<div class="detail-section">
+  <div class="container-fluid">
+    <!--<a routerLink="/products"><i class="material-icons">arrow_back_ios</i></a>-->
+    <button class="detailViewBtnBack" a routerLink="/product-list/{{product.id}}"><i class="material-icons">arrow_back_ios</i>Back
+    </button>
+
+    <img src="{{ product.imageUrl }}" class="detail-img">
+
+    <h4>{{ product.name }}</h4>
+
+    <h6>Barcode</h6>
+    <p>{{ product.barcode}}</p>
+
+    <h6>Description</h6>
+    <p>{{ product.description }}</p>
+
+
+    <h6>Category</h6>
+    <p> {{product.category ? product.category.name : ""}}</p>
+
+    <h6>Fridge</h6>
+    <p>{{product.fridge ? product.fridge.name : "" }}</p>
+
+    <h6>Expire Date</h6>
+    <p>{{ product.date | date:'dd-MM-yyyy'}}</p>
+
+    <div class="form-group">
+      <label for="name">Product Name</label>
+      <input type="text" class="form-control" id="name"
+             [(ngModel)]="product.name" name="name">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Product Description</label>
+      <input type="text" class="form-control" id="description"
+             [(ngModel)]="product.description" name="description">
+    </div>
+
+    <div class="form-group">
+      <label for="imageUrl">Image URL</label>
+      <input type="text" class="form-control" id="imageUrl"
+             [(ngModel)]="product.imageUrl" name="imageUrl">
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category</label>
+      <select class="form-control" id="category"
+              [(ngModel)]="product.category" name="category">
+        <option *ngFor="let category of categories" [ngValue]="category">{{category.name}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="fridge">Fridge</label>
+      <select class="form-control" id="fridge"
+              [(ngModel)]="product.fridge" name="fridge">
+        <option *ngFor="let fridge of fridges" [ngValue]="fridge">{{fridge.name}}</option>
+      </select>
+    </div>
+
+    <div id="dateInputContainer" class="form-group">
+      <label for="date"><b class="label">Set Expire Date: </b></label>
+      <input id="date" name="date" class="expireSelect"
+             [(ngModel)]="product.date"
+             type="text" bsDatepicker [bsConfig]="datePickerConfig"/>
+    </div>
+
+
+    <div class="detailBtns">
+      <button type="submit" (click)="updateTheProduct()" class="detailViewBtnEdit">Update</button>
+
+      <button (click)="goBack()" class="detailViewBtnDelete">Cancel</button>
+
+      <p>{{ message }}</p>
+
+    </div>
+  </div>
+</div>

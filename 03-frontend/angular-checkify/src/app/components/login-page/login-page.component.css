@@ -1,0 +1,136 @@
+
+.login-form-input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid #dddddd;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.5s;
+}
+
+.login-form-content {
+  padding: 30px;
+  background: #eeeeee;
+}
+
+.login-form-links {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.login-form-link {
+  font-size: 0.9em;
+  color: #27808C;
+  text-decoration: none;
+}
+
+.loginBackground {
+  background-image: linear-gradient(25deg, rgba(170, 206, 226, 0.3) 25%, rgba(139, 222, 181, 0.3) 100%),
+  url("/assets/images/loginBackground1920.jpg");
+
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+
+}
+
+.login-form {
+  max-width: 350px;
+  margin: 0 auto;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgb(255, 255, 255);
+}
+
+.login-form-custom {
+  margin-bottom: 15px;
+  text-align: center;
+  color: #333333;
+}
+
+.login-form-button {
+  padding: 10px;
+  color: #ffffff;
+  font-weight: bold;
+  background: #27808C;
+  width: 100%;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-form-button:hover {
+  transition: 0.5s;
+  background: #2893a1;
+}
+
+.login-form-button:active {
+  background: #008067;
+}
+
+.login-form-logo {
+  display: block;
+  /*max-width: 300px;*/
+  margin: 0 auto;
+}
+
+​​
+.login-form-input:focus {
+  border-color: #009578;
+}
+
+​
+.login-form-input::placeholder {
+  color: rgb(170, 170, 170);
+}
+
+​
+​.login-body {
+  /*background: #009578;*/
+  /*margin: 15px;*/
+  /*margin-top: 10px;*/
+  background: linear-gradient(to top, rgba(255, 255, 255, 0), #eeeeee);
+}
+
+.login-form-content {
+  padding: 30px;
+  background: #eeeeee;
+}
+
+.login-form-logo-container {
+  padding: 50px;
+  /*margin-top: 25px;*/
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #eeeeee);
+}
+
+.login-form-bottom-fade {
+  padding: 75px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0), #eeeeee)
+}
+
+.login-form {
+  max-width: 350px;
+  margin: 0 auto;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+
+/*.login-form  {
+  box-sizing: border-box;
+  font-family: 'Quicksand';
+}*/
+

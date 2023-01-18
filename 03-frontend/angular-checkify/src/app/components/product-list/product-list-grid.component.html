@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="product-list.component.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+</head>
+
+<body>
+<table class="fridge-table">
+  <thead>
+  <tr>
+    <th>Image</th>
+    <th>Name</th>
+    <th>Barcode</th>
+    <th>Expire Date</th>
+    <th>Category</th>
+    <th>Days left</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let tempProduct of products">
+    <td routerLink="/product-list/{{tempProduct.id}}" class="align-middle">
+      <img src="{{ tempProduct.imageUrl }}" width="50px"/>
+    </td>
+    <td routerLink="/product-list/{{tempProduct.id}}" class="align-middle">{{ tempProduct.name}}</td>
+    <td class="align-middle">{{ tempProduct.barcode}}</td>
+    <td class="align-middle">{{ tempProduct.date |date}}</td>
+    <td class="align-middle">{{ tempProduct.category.name}}</td>
+    <td class="align-middle">{{ showDaysLeft(tempProduct.date)}}</td>
+    <td>
+      <button (click)="deleteFromFridge(tempProduct.id)" class="detailViewBtnDelete"></button>
+    </td>
+  </tr>
+
+  </tbody>
+</table>
+
+<div id="addBtn" class="wrapper">
+  <button routerLink="/barcode" class="circle">
+    <img id="addSign"
+         src="https://ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/2x/btw_ic_speeddial_white_24dp_2x.png"
+         alt=""/>
+  </button>
+
+</div>
+
+
+<!-- <script src="tableSort.js"></script> -->
+</body>
+
+<!-- begin footer -->
+<!-- <div class="footer-pagination">
+   <div class="row">
+       <div class="col-md-6 "></div>
+
+       <div class="col-md-6 ">
+         <div class="row">
+               <div class="col-md-9" style="padding-left: 30%" >
+
+                   <ngb-pagination
+                                   [(page)]="thePageNumber"
+                                   [pageSize]="thePageSize"
+                                   [collectionSize]="theTotalElements"
+                                   [maxSize]="5"
+                                   [boundaryLinks]="true"
+                                   (pageChange)="listProducts()"
+
+                                   >
+
+                   </ngb-pagination>
+
+               </div>
+
+               <div class="col-md-3 mt-2" style="text-align: right;">
+                   <span class="mr-2">Page Size</span>
+
+
+                   <select (change)="updatePageSize($event.target.value)">
+                       <option>2</option>
+                       <option selected="true">5</option>
+                       <option>10</option>
+                       <option>20</option>
+                       <option>50</option>
+                       <option>100</option>
+                   </select>
+               </div>
+
+           </div>
+       </div>
+
+   </div>
+</div>-->
+<!-- end footer -->

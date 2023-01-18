@@ -1,0 +1,117 @@
+.detailBtns {
+  align-items: center;
+}
+
+.btn-info {
+  color: #fff;
+  background-color: #0da8e4 !important;
+  border-color: #0da8e4 !important
+}
+
+.detailViewBtnBack {
+  text-decoration: none;
+  margin-top: 90px;
+  display: flex;
+  color: #666666;
+  font-weight: bold;
+  font-size: 16px;
+  /*padding: 12px 15px;*/
+}
+
+.detailViewBtnBack:hover {
+  transition: 0.2s;
+  text-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.detailViewBtn {
+  background: #05143f;
+  padding: 7px 20px;
+  text-align: center;
+  display: inline-block;
+  color: #fff;
+  border-radius: 2px;
+  font-size: 14px;
+  /*margin-top:5px;*/
+  margin: 5px;
+}
+
+.detailViewBtnEdit {
+  background: green;
+  padding: 7px 20px;
+  text-align: center;
+  display: inline-block;
+  color: #fff;
+  border-radius: 2px;
+  font-size: 14px;
+  /*margin-top:5px;*/
+  /*margin: 5px;*/
+  margin-left: 70px;
+}
+
+.detailViewBtnDelete {
+  background: rgb(202, 0, 0);
+  padding: 7px 20px;
+  text-align: center;
+  display: inline-block;
+  color: #fff;
+  border-radius: 2px;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-left: 25px;
+}
+
+.detailViewBtnDelete:hover {
+  transition: 0.2s;
+  background: red;
+  color: #fff;
+}
+
+.detailViewBtnEdit:hover {
+  transition: 0.2s;
+  background: rgb(0, 190, 0);
+  color: #fff;
+}
+
+.detail-img {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  width: 300px;
+  border: rgb(202, 202, 202) solid 1px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 10px !important;
+}
+
+.form-control {
+  border-radius: 5px !important;
+  min-width: 400px !important;
+  min-height: 38px !important;
+  max-width: 400px !important;
+  cursor: pointer;
+}
+
+.label {
+  margin-right: 10px !important;
+}
+
+.expireSelect {
+  margin-top: 30px !important;
+  width: 270px;
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: 1px solid rgb(204, 204, 204);
+  text-align: center;
+}
+
+.editViewCategorySelect, .editViewFridgeSelect {
+  display: block;
+  width: 400px;
+  border-radius: 5px;
+  border-color: rgb(204, 204, 204);
+  font-size: 13px;
+  box-shadow: 0px 1em 2em -1.5em rgba(0, 0, 0, .5);
+  cursor: pointer;
+  padding: 6px 12px;
+}

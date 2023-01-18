@@ -1,3 +1,4 @@
 .gitignore
 ./target/
 /.idea/
+./03-frontend/angular-checkify/node_modules/

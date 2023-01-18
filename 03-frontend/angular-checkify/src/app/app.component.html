@@ -1,0 +1,61 @@
+<div *ngIf="!logged()">
+  <app-login-page></app-login-page>
+</div>
+
+<div *ngIf="logged()">
+  <div class="page-wrapper">
+
+    <!-- MENU SIDEBAR-->
+    <aside class="menu-sidebar d-none d-lg-block">
+      <div class="logo">
+        <a href="#">
+          <img src="assets/images/logo.png" alt="checkify" class="img-responsive">
+        </a>
+      </div>
+
+      <app-fridge-menu></app-fridge-menu>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container">
+      <!-- HEADER DESKTOP-->
+      <header class="header-desktop">
+        <div class="section-content section-content-p30">
+          <div class="container-fluid">
+            <div class="header-wrap">
+
+              <app-search></app-search>
+
+              <div id="addBtn" class="wrapper">
+                <button class="circle" (click)="logOut()">
+                  <img id="addSign" src="https://cdn2.iconfinder.com/data/icons/picons-essentials/57/logout-512.png"
+                       alt=""/>
+                </button>
+              </div>
+
+
+            </div>
+            <div class="account-wrap"></div>
+          </div>
+        </div>
+      </header>
+      <!-- END HEADER DESKTOP-->
+
+      <!-- MAIN CONTENT-->
+      <router-outlet></router-outlet>
+
+    </div>
+  </div>
+
+  <!--END PAGE CONTAINER-->
+
+  <footer>
+    <ul>
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Contact Us</a></li>
+      <li><a href="#">Help</a></li>
+    </ul>
+  </footer>
+</div>
+
