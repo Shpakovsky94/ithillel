@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name="USER")
+@Table(name = "USER")
 public class User implements Serializable {
 
     @Id
@@ -33,7 +33,7 @@ public class User implements Serializable {
     private boolean isPremium;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="role")
+    @Column(name = "role")
     private Role role;
 
     @JsonIgnoreProperties("fridges")

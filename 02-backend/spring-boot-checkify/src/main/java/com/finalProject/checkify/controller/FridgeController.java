@@ -5,6 +5,8 @@ import com.finalProject.checkify.service.FridgeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -25,18 +27,18 @@ public class FridgeController {
     }
 
     @GetMapping("/fridge/{id}")
-    public Fridge getFridgeById(@PathVariable(value = "id") Long fridgeId) {
+    public Fridge getFridgeById(@PathVariable(value = "id") Long fridgeId, HttpServletRequest request, Principal principal) {
 
         return fridgeService.findById(fridgeId);
     }
 
     @PostMapping("/fridge/{id}")
-    public void saveFridge(@RequestBody Fridge theFridge){
+    public void saveFridge(@RequestBody Fridge theFridge) {
         fridgeService.save(theFridge);
     }
 
     @DeleteMapping("/fridge/{id}")
-    public void deleteFridge(@PathVariable(value = "id") Long fridgeId){
+    public void deleteFridge(@PathVariable(value = "id") Long fridgeId) {
         fridgeService.deleteById(fridgeId);
     }
 

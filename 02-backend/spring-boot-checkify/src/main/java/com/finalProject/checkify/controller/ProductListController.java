@@ -31,18 +31,19 @@ public class ProductListController {
 
         return productListService.findById(productId);
     }
+
     @PutMapping()
     public void updateProduct(@RequestBody ProductList productList) {
         productListService.save(productList);
     }
 
     @PostMapping()
-    public void saveProduct(@RequestBody ProductList productList){
+    public void saveProduct(@RequestBody ProductList productList) {
         productListService.save(productList);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable(value = "id") Long productId){
+    public void deleteProduct(@PathVariable(value = "id") Long productId) {
         productListService.deleteById(productId);
     }
 

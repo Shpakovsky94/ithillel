@@ -34,30 +34,30 @@ public class ProductController {
     }
 
     @PostMapping()
-    public void saveProduct(@RequestBody Product theProduct){
+    public void saveProduct(@RequestBody Product theProduct) {
         productService.save(theProduct);
     }
 
     @DeleteMapping("/{barcode}")
-    public void deleteProduct(@PathVariable(value = "barcode") String  barcode){
+    public void deleteProduct(@PathVariable(value = "barcode") String barcode) {
         productService.deleteByBarcode(barcode);
     }
 
 
     @GetMapping("/register/{code}")
-    public Product getBarcodeProcessAndReturnProduct(@PathVariable(value = "code") String barcode){
+    public Product getBarcodeProcessAndReturnProduct(@PathVariable(value = "code") String barcode) {
         localBarcode = barcode;
         System.out.println(localBarcode);
         Product productTest = null;
 
-        if (productService.findByBarcode(localBarcode) != null){
+        if (productService.findByBarcode(localBarcode) != null) {
             return productService.findByBarcode(localBarcode);
 
-        }else if (productService.getProductFromMonsterApi(localBarcode) != null){
+        } else if (productService.getProductFromMonsterApi(localBarcode) != null) {
             productService.save(productService.getProductFromMonsterApi(localBarcode));
             return productService.findByBarcode(localBarcode);
 
-        }else {
+        } else {
             productTest = new Product();
             productTest.setBarcode(localBarcode);
             productTest.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Question_mark_%28black%29.svg/800px-Question_mark_%28black%29.svg.png");
