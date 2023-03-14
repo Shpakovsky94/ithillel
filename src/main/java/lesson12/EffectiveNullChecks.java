@@ -1,9 +1,16 @@
+package lesson12;
+
 public class EffectiveNullChecks {
 
     public static void main(String[] args) {
+
+//
+//        System.out.println(stringReverse(null));
+//        System.out.println(stringReverse("hello"));
+
         try {
-            System.out.println(reverseString(""));
             System.out.println(reverseString(null));
+            System.out.println(reverseString("hello"));
         } catch (IllegalArgumentException e) {
             System.err.print("Processing fail. Incorrect input" + e);
         } catch (Exception e) {

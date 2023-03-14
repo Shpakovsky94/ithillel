@@ -1,3 +1,5 @@
+package lesson12;
+
 public class StaticChecks {
 
     private static int main1 = 10;
@@ -5,9 +7,13 @@ public class StaticChecks {
 
 
     public static void main(String[] args) {
-        StaticTest staticTest = new StaticTest();
-        System.out.println(staticTest.test1);
-        System.out.println(staticTest.test2);
+
+        StaticTest object = new StaticTest();
+
+
+        System.out.println(StaticTest.test1);
+//        System.out.println(object.test1);
+//        System.out.println(object.test2);
     }
 }
 
@@ -15,7 +21,7 @@ class StaticTest {
     public static int test1 = 100;
     public int test2 = 200;
 
-    private static void function() {
+    public static void function() {
         System.out.println("function");
     }
 }
