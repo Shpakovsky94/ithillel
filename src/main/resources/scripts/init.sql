@@ -77,7 +77,7 @@ i INT DEFAULT 1;
 autocommit = 0;
 
     WHILE
-i <= 30000 DO
+i <= 1000000 DO
         INSERT INTO PERSON (first_name, last_name, city_id, country_id, date_of_birth, gender)
         VALUES (
             CONCAT('First', i),
@@ -113,7 +113,7 @@ i INT DEFAULT 1;
 autocommit = 0;
 
     WHILE
-i <= 1000000 DO
+i <= 30000 DO
 start transaction;
 INSERT INTO PERSON (first_name, last_name, city_id, country_id, date_of_birth, gender)
 VALUES (CONCAT('First', i),
@@ -147,7 +147,7 @@ BEGIN
 i INT DEFAULT 1;
     SET
 autocommit = 0;
-
+!!!!
 start transaction;
 WHILE
 i <= 1000000 DO
