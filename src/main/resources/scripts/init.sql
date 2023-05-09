@@ -127,7 +127,7 @@ CREATE PROCEDURE sp_insert_person_with_transaction_at_start()
 BEGIN
     DECLARE i INT DEFAULT 1;
     SET autocommit = 0;
-!!!!
+
 start transaction;
 WHILE i <= 1000000 DO
 INSERT INTO PERSON (first_name, last_name, city_id, country_id, date_of_birth, gender)
