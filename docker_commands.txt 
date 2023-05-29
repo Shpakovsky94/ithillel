@@ -1,0 +1,5 @@
+mvnw clean install
+
+docker build -t myapp .
+
+docker-compose up -d

@@ -11,7 +11,7 @@ RUN apt-get update && \
 RUN mkdir -p /ithillel/scripts
 RUN mkdir -p /ithillel/logs
 
-ADD target/myapp-jar-with-dependencies.jar ithillel/scripts/myapp.jar
+ADD target/myapp.jar ithillel/scripts/myapp.jar
 
 COPY start-cron-task.sh /ithillel/scripts
 COPY start-main-1200.sh /ithillel/scripts
