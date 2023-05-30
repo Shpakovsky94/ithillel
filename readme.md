@@ -2,9 +2,9 @@
 ```
 mvn clean compile assembly:single
 ```
-2. docker build image
+2. build docker image.
 ```
-docker build -t myapp .
+docker build -t myapp . -d
 ```
 3. start the docker container from 
 ```
