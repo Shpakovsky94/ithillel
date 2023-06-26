@@ -1,6 +1,6 @@
 <configuration>
 
-<property name="HOME_LOG" value="/tmp/ithillel/logs/myapp.log"/>
+<property resource="application.properties" />
 
 <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <layout class="ch.qos.logback.classic.PatternLayout">
@@ -9,7 +9,7 @@
 </appender>
 
 <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-    <file>${HOME_LOG}</file>
+    <file>${log.file.path}</file>
     <append>true</append>
     <immediateFlush>true</immediateFlush>
     <encoder>
