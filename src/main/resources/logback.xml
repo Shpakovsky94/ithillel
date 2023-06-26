@@ -1,6 +1,6 @@
 <configuration>
 
-<property name="HOME_LOG" value="logs/myapp.log"/>
+<property name="HOME_LOG" value="/tmp/ithillel/logs/myapp.log"/>
 
 <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <layout class="ch.qos.logback.classic.PatternLayout">
@@ -17,13 +17,8 @@
     </encoder>
 </appender>
 
-<logger name="com.mkyong" level="DEBUG" additivity="false">
-    <appender-ref ref="CONSOLE"/>
-    <appender-ref ref="FILE"/>
-</logger>
-
 <root level="DEBUG">
-    <appender-ref ref="CONSOLE"/>
+<!--    <appender-ref ref="CONSOLE"/>-->
     <appender-ref ref="FILE" />
 </root>
 
