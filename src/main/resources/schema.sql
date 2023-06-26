@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS ithillel_full;
-CREATE DATABASE ithillel_full;
-USE ithillel_full;
+DROP DATABASE IF EXISTS test;
+CREATE DATABASE test;
+USE test;
 
-CREATE TABLE IF NOT EXISTS `ithillel_full`.`emoji` (
+CREATE TABLE IF NOT EXISTS `test`.`emoji` (
                                                        id BIGINT PRIMARY KEY AUTO_INCREMENT,
                                                        name VARCHAR(255),
                                                        category VARCHAR(255),

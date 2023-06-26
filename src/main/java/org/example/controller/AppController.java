@@ -3,7 +3,7 @@ package org.example.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.example.model.Emoji;
 import org.example.service.EmojiService;
-import org.springframework.http.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +21,11 @@ public class AppController {
     @PostMapping
     public Emoji createEmoji(@RequestBody Emoji emoji) {
         return emojiService.create(emoji);
+    }
+
+    @GetMapping("/")
+    public String hello() {
+        return "Working";
     }
 
     @GetMapping("/all")
