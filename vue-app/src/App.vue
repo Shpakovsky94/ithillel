@@ -18,13 +18,15 @@
 </template>
 
 <script>
+import Welcome from './components/Welcome.vue';
 import GetAllEmojis from './components/GetAllEmojis.vue';
 
 export default {
   data() {
     return {
       tabs: [
-        'Get All Emojis'
+        'Home',
+        'Get All Emojis',
       ],
       activeTab: 0
     };
@@ -33,6 +35,8 @@ export default {
     currentComponent() {
       switch (this.activeTab) {
         case 0:
+          return Welcome;
+        case 1:
           return GetAllEmojis;
       }
     }
