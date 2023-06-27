@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*")
 @Slf4j
 public class AppController {
     private final EmojiService emojiService;
