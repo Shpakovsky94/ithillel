@@ -1,9 +1,15 @@
 import {fileURLToPath, URL} from 'node:url'
-
-import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
+
+const { defineConfig } = require('@vue/cli-service')
+module.exports = defineConfig({
+    transpileDependencies: true,
+    devServer: {
+        allowedHosts: "all"
+    }
+})
 export default defineConfig({
     plugins: [
         vue(),
