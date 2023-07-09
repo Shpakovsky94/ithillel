@@ -8,6 +8,7 @@
 4. заняття 33: https://github.com/Shpakovsky94/ithillel/tree/2023_lecture33/src/main/java/lesson33
 5. заняття 38: https://github.com/Shpakovsky94/ithillel/tree/2023_lecture38/src/main/java/
 6. заняття 47: https://github.com/Shpakovsky94/ithillel/tree/2023_lecture47
+7. заняття 52: https://github.com/Shpakovsky94/ithillel/tree/2023_lecture52
 
 Менторські заняннятя для групи Java Pro 28.07.2022
 
